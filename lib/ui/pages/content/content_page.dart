@@ -40,7 +40,6 @@ class ContentPage extends GetView<LocationController> {
                             timestamp: DateTime.now());
                         controller.saveLocation(location: objeto).then((value) {
                           controller.getAll();
-                          print(controller.locations[0].latitude);
                         });
                       },
                       child: const Text("Registrar Ubicacion"),
