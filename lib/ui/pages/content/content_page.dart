@@ -13,7 +13,7 @@ class ContentPage extends GetView<LocationController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("GPS Tracker"),
+        title: const Text("GPS Tracker - Equipo 8"),
       ),
       body: SafeArea(
         child: FutureBuilder(
@@ -31,6 +31,17 @@ class ContentPage extends GetView<LocationController> {
                         // TODO: 2. Obten la precision de la lectura con gpsController.locationAccuracy.
                         // TODO: 3. Crea un objeto [TrackedLocation] con fecha actual [DateTime.now] y la precisio como texto [accuracy.name]
                         // TODO: 4. con el [controller] guarda ese objeto [saveLocation]
+                        final position = await gpsController.currentLocation;
+                        final accuracy = await gpsController.locationAccuracy;
+                        TrackedLocation objeto = TrackedLocation(
+                            latitude: position.latitude,
+                            longitude: position.longitude,
+                            precision: accuracy.name,
+                            timestamp: DateTime.now());
+                        controller.saveLocation(location: objeto).then((value) {
+                          controller.getAll();
+                          print(controller.locations[0].latitude);
+                        });
                       },
                       child: const Text("Registrar Ubicacion"),
                     ),
@@ -56,6 +67,7 @@ class ContentPage extends GetView<LocationController> {
                               trailing: IconButton(
                                 onPressed: () {
                                   // TODO: elimina la ubicacion [location] usando el controlador [deleteLocation]
+                                  controller.deleteLocation(location: location);
                                 },
                                 icon: const Icon(
                                   Icons.delete_forever_rounded,
@@ -75,6 +87,7 @@ class ContentPage extends GetView<LocationController> {
                     child: ElevatedButton(
                       onPressed: () async {
                         // TODO: elimina todas las ubicaciones usando el controlador [deleteAll]
+                        controller.deleteAll();
                       },
                       child: const Text("Eliminar Todos"),
                     ),
